@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UIANamespace;
-public interface UIAFeedBackInterface
+public interface IUIAFeedBackInterface
 {
     bool IsActive();
-    void windowContent(int id);
+    void WindowContent(int id);
+    Rect WindowShape();
+    string WindowName();
     void WindowCloseCB(WindowCloseCallBack win);
 }

@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class UIAFeed : MonoBehaviour, TriggerInterface
+public class UIAFeed : MonoBehaviour
 {
     [SerializeField]
     private Rect _menuPosition = new Rect(Vector2.zero, new Vector2(150f, 100f));
@@ -10,7 +10,7 @@ public class UIAFeed : MonoBehaviour, TriggerInterface
 
 
     [SerializeField]
-    UIAFeedBackInterface fb;
+    IUIAFeedBackInterface fb;
     public delegate void UIcallBackHandle(int id);
     public UIcallBackHandle windowOne;
     // Use this for initialization
@@ -31,7 +31,7 @@ public class UIAFeed : MonoBehaviour, TriggerInterface
         if (_subWindowTrigger)
         {
             var _newPosition = new Rect(new Vector2(_menuPosition.x+_menuPosition.width, _menuPosition.y), _menuPosition.size);
-            GUI.Window(2, _newPosition, fb.windowContent, "testWindow");
+            GUI.Window(2, _newPosition, fb.WindowContent, "testWindow");
         }
     }
 

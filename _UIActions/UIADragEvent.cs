@@ -3,15 +3,21 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System;
 
-public class UIADragEvent : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler,IUIARootPositionInterface
+public class UIADragTrigger : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler,IUIARootPositionInterface
 {
     RectTransform mine;
     [SerializeField]
     Vector2 offsetPosition;
+
     [SerializeField]
     Rect _rect;
     bool _windowTrigger,_windowWait;
-    UIAFeedBackInterface fb;
+    IUIAFeedBackInterface fb;
+    Rect _cameraRect;
+
+    [SerializeField]
+    float _xOff,_yOff;
+
     Renderer _foo;
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -26,18 +32,23 @@ public class UIADragEvent : MonoBehaviour, IPointerEnterHandler,IPointerExitHand
     private void Awake()
     {
         mine = this.GetComponent<RectTransform>();
-        fb = new TriggerAgentTool(this.gameObject);
-        fb.WindowCloseCB(CloseWindow);
         _foo = this.GetComponent<Renderer>();
 
         if (mine == null)
             throw new NullReferenceException();
+
+
+
+
     }
 
     public void OnRootChange(Vector2 rootPosition)
     {
-        mine.anchoredPosition = rootPosition+offsetPosition;//Camera.main.ScreenToWorldPoint(rootPosition);
-        Debug.Log("calling rootChange");
+        _cameraRect = Camera.main.pixelRect;
+        var _recx = _xOff * _cameraRect.width;
+        var _recy = _yOff * _cameraRect.height;
+        offsetPosition = new Vector2(_recx, _recy);
+        mine.position = rootPosition+offsetPosition;
     }
 
     void CloseWindow()
@@ -55,9 +66,18 @@ public class UIADragEvent : MonoBehaviour, IPointerEnterHandler,IPointerExitHand
         return _windowWait;
     }
     
-    public UIAFeedBackInterface GetMyWindow()
+    public IUIAFeedBackInterface GetMyWindow()
     {
         return fb;
+    }
+
+    public void SendObject(GameObject _obj)
+    {
+        if(fb == null)
+        { 
+            fb = new TriggerAgentTool(_obj);
+            fb.WindowCloseCB(CloseWindow);
+        }
     }
 }
 

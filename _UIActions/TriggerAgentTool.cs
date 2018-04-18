@@ -5,19 +5,40 @@ using UIANamespace;
 
 
 using System.Reflection;
-public class TriggerAgentTool : UIAFeedBackInterface
+public class TriggerAgentTool : IUIAFeedBackInterface
 {
     float _time,_timeOffset;
     string _timeStr="",_offsetStr="";
     string _triggerController = "n/a";
     string _name="n/a";
 
-
+#region TriggerObject Property copy
     public string _Name { get { return _name; } set { _name = value; } }
     public float _Time { get { return _time; } set { _time = value; } }
     public float _TimeOffset { get { return _timeOffset; } set { _timeOffset = value; } }
     public string _TriggerController { get { return _triggerController; } set { _triggerController = value; } }
 
+#endregion
+
+    private Rect _staticMenuPosition;
+    Vector2 infi = new Vector2(999f, 999f);
+    Vector2 size = new Vector2(150, 100);
+    public Rect StaticMenuPosition
+    {
+        get
+        {
+            return _staticMenuPosition;
+        }
+
+        set
+        {
+            _staticMenuPosition = value;
+        }
+    }
+
+
+
+    bool _doOnce;
     GameObject _target;
     WindowCloseCallBack winClose;
     TriggerObjects _tO=new TriggerObjects();
@@ -29,6 +50,7 @@ public class TriggerAgentTool : UIAFeedBackInterface
     public TriggerAgentTool(GameObject _obj)
     {
         _target = _obj;
+        _name = _obj.name;
         var chu = GlobalToolBox.Instance.GetOrAddComponent<ActionsListener>();
         var foo = chu.CheckAvailability(_obj.name);
         if(foo!=null)
@@ -41,7 +63,7 @@ public class TriggerAgentTool : UIAFeedBackInterface
 
     }
 
-    public void windowContent(int id)
+    public void WindowContent(int id)
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Time:");
@@ -72,7 +94,6 @@ public class TriggerAgentTool : UIAFeedBackInterface
         var t = _target.transform.GetOrAddComponent<TriggerAgentValue>();
         EditTriggerObject();
         t.SetObject(_tO);      
-        winClose();
     }
 
     /// <summary>
@@ -88,7 +109,7 @@ public class TriggerAgentTool : UIAFeedBackInterface
             des.SetValue(_tO,
                 val,
                 null);
-            Debug.Log(des.Name);
+         //   Debug.Log(des.Name);
         }
         
     }
@@ -96,5 +117,20 @@ public class TriggerAgentTool : UIAFeedBackInterface
     public void WindowCloseCB(WindowCloseCallBack win)
     {
         winClose = win;
+    }
+
+    public string WindowName()
+    {
+        return _name;
+    }
+
+    public Rect WindowShape()
+    {
+        var rec = Camera.main.pixelRect;
+        var x = rec.width - (rec.width / 5);
+        var y = rec.height / 3;
+        _staticMenuPosition = new Rect(new Vector2(x, y), size);
+
+        return _staticMenuPosition;
     }
 }
