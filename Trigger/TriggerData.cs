@@ -3,7 +3,9 @@ using System.Collections;
 using System;
 using UnityEngine.Events;
 
-
+/// <summary>
+/// EVENT listener
+/// </summary>
 [System.Serializable]
 public class TriggerData :MonoBehaviour, ITriggerInterface
 {
@@ -37,9 +39,9 @@ public class TriggerData :MonoBehaviour, ITriggerInterface
     /// <summary>
     /// Trigger Toggle ON/OFF
     /// </summary>
-    public void GO()
+    public void GO(bool value)
     {
-        _trigger = !_trigger;
+        _trigger = value;
 
         if (TriggerChange != null)
             TriggerChange(_trigger);

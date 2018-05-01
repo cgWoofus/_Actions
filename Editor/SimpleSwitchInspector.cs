@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityEditor;
-[CustomEditor(typeof(SimpleSwitch))]
+[CustomEditor(typeof(SimpleObjectTrigger))]
 public class SimpleSwitchInspector : Editor
 {
 
 
     public override void OnInspectorGUI()
     {
-        var ss = target as SimpleSwitch;
+        var ss = target as SimpleObjectTrigger;
 
         EditorGUI.BeginChangeCheck();
 

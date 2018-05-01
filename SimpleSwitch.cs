@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using UnityEngine.Events;
 
-public class SimpleSwitch : MonoBehaviour, ITriggerInterface
+public class SimpleObjectTrigger : MonoBehaviour, ITriggerInterface
 {
     [SerializeField]
     bool _trigger;

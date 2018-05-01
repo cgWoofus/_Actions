@@ -1,5 +1,5 @@
 ﻿[System.Serializable]
-public class TriggerObjects
+public class TriggerObject
 {
     
     public string _name;

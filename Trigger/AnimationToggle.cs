@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-public class AnimationToggle : MonoBehaviour
+using TriggerNamespace;
+public class AnimationToggle : MonoBehaviour , ICustomComponents
 {
     Trigger _myTrigger;
     Animator _myAnimator;
@@ -9,20 +9,73 @@ public class AnimationToggle : MonoBehaviour
     [SerializeField]
     string _trigger = "_trigger";
 
+    public Trigger MyTrigger
+    {
+        get
+        {
+            return _myTrigger;
+        }
+
+        set
+        {
+            _myTrigger = value;
+        }
+    }
+
+    public Animator MyAnimator
+    {
+        get
+        {
+            return _myAnimator;
+        }
+
+        set
+        {
+            _myAnimator = value;
+        }
+    }
+
+    public AnimationState State
+    {
+        get
+        {
+            return _state;
+        }
+
+        set
+        {
+            _state = value;
+        }
+    }
+
+    public string Trigger
+    {
+        get
+        {
+            return _trigger;
+        }
+
+        set
+        {
+            _trigger = value;
+        }
+    }
 
     private void Start()
     {
-        _myTrigger = this.GetComponent<Trigger>();
-        _myAnimator = this.GetComponent<Animator>();
-        if(_myTrigger!=null && _myAnimator!= null)
-            _myTrigger.eventHook(OnAction);
-       var stat=  _myAnimator.GetCurrentAnimatorStateInfo(0);
-        
+       MyAnimator = this.GetComponent<Animator>();        
     }
 
-    void OnAction(bool _value)
+     public TriggerHandle GetAction()
     {
-        _myAnimator.SetTrigger(_trigger);
+        return OnAction;
+    }
+
+    public void OnAction(bool _value)
+    {
+     //   MyAnimator.SetTrigger(Trigger);
+          MyAnimator.SetBool(Trigger, _value);
+        
     }
 
 

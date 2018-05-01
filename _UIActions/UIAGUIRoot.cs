@@ -5,7 +5,7 @@ public class UIAGUIRoot : MonoBehaviour
 {
     private Rect _staticMenuPosition;
     [SerializeField]
-    IUIAFeedBackInterface feedBackContent;
+    IUIAFeedBackInterface currentFeedBackContent;
     Vector2 infi = new Vector2(999f, 999f);
     Vector2 size = new Vector2(150, 100);
     public Rect StaticMenuPosition
@@ -31,13 +31,24 @@ public class UIAGUIRoot : MonoBehaviour
 
     private void OnGUI()
     {
-        if(feedBackContent!=null)
-           GUILayout.Window(1, feedBackContent.WindowShape(), feedBackContent.WindowContent, feedBackContent.WindowName());
+        if(currentFeedBackContent!=null)
+           GUILayout.Window(1, currentFeedBackContent.WindowShape(), currentFeedBackContent.WindowContent, currentFeedBackContent.WindowName());
     }
 
-    public void UpdateWindow(IUIAFeedBackInterface _content)
+    public void UpdateWindow(IUIAFeedBackInterface newFeedBackContent)
     {
-        feedBackContent = _content;
+
+        if (currentFeedBackContent != null)
+            {
+                //get objects  from closing object
+                var fd = currentFeedBackContent.GetOpeningInstructions();
+                currentFeedBackContent.WindowCloseCB();
+                newFeedBackContent.OpeningCB(fd);
+            }
+        else
+            newFeedBackContent.OpeningCB();
+
+        currentFeedBackContent = newFeedBackContent;
     }
 
 

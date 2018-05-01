@@ -3,32 +3,47 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System;
 
-public class UIARightClick : MonoBehaviour, IBeginDragHandler ,IEndDragHandler
+public class UIARightClickTriggerOption : MonoBehaviour, IBeginDragHandler ,IEndDragHandler
 {
 
     [SerializeField]
     private Rect _menuPosition = new Rect(Vector2.zero, new Vector2(150f, 100f));
+
+    [SerializeField]
+    private UnityEngine.Object GlobalObjectInjection;
+
     private bool _trigger = false, _subWindowTrigger = false;
     private Rect _currentWindow;
     Vector2 infi = new Vector2(999f,999f);
     Vector2 size = new Vector2(150, 100);
     [SerializeField]
     IUIAFeedBackInterface fb;
+
+
+
     public delegate void UIcallBackHandle(IUIAFeedBackInterface id);
     public UIcallBackHandle UpdateWindow;
+
 
 
     static IList Chanz;
 
     public static IList ListOfSomething { set { Chanz = value; } get { return Chanz; } }
 
-
-    void Start()
+    public void Construct()
     {
+        var _globalObj = GlobalObjectGet();
         fb = new TriggerAgentTool(this.gameObject);
-        fb.WindowCloseCB(CloseWindow);
-    }   
-    
+        fb.CheckIfExisting(_globalObj);
+    }
+
+    public GameObject GlobalObjectGet()
+    {
+        //var foo = GlobalObjectInjection.GetType().GetMethod("GetGlobalObject");
+        //var gO = foo.Invoke(GlobalObjectInjection, null);
+        return GlobalToolBox.Instance.gameObject;
+    }
+
     void CloseWindow()
     {
         _subWindowTrigger = false;
@@ -69,6 +84,7 @@ public class UIARightClick : MonoBehaviour, IBeginDragHandler ,IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             //_trigger = false;
@@ -85,7 +101,7 @@ public class UIARightClick : MonoBehaviour, IBeginDragHandler ,IEndDragHandler
                         }
                         if (foo.IsActive())
                         {
-                            foo.SendObject(this.gameObject);
+                           // foo.SendObject(this.gameObject);
                             if (fb == null)
                                 fb = foo.GetMyWindow();
                             UpdateWindow(fb);

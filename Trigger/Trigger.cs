@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-public class Trigger : MonoBehaviour
+using System.Reflection;
+using TriggerNamespace;
+
+public class Trigger : MonoBehaviour , ICustomComponents
 {
 
-    public delegate void  TriggerHandle(bool b);
 
     public event TriggerHandle TriggerEvent;
 
@@ -15,6 +17,7 @@ public class Trigger : MonoBehaviour
 
 
     private bool _trigger;
+    private int _subscribers; 
     private ITriggerInterface _targetInterface;
 
     private ITriggerInterface TargetInterface
@@ -33,6 +36,7 @@ public class Trigger : MonoBehaviour
         set { _TriggerHandleObject = value.ToNullUnlessImplementsInterface<ITriggerInterface>();}
         get { return _TriggerHandleObject; }
     }
+    public int _NumberOfSubs { get { return _subscribers; } }
 
     public bool _Trigger { get {return _trigger; }}
 
@@ -43,11 +47,10 @@ public class Trigger : MonoBehaviour
             return;
         UnityAction<bool> chucchu = OnValueChanged;        
         _targetInterface.OnValueChangeHook(chucchu);
-             
-    }
+        _subscribers = 0;
+        LookForListeners("GetAction");
 
-    private void LateUpdate()
-    {
+             
     }
 
     void OnValueChanged(bool change)
@@ -59,10 +62,33 @@ public class Trigger : MonoBehaviour
             TriggerEvent(change);
     }
 
-    public void eventHook(TriggerHandle chu)
+    public void EventHook(TriggerHandle chu)
     {
         TriggerEvent -= chu;
         TriggerEvent += chu;
+        _subscribers++;
+    }
+
+
+    public void LookForListeners(string MethodName)
+    {
+       var _components = this.gameObject.GetComponents<Component>();
+       var _flags = BindingFlags.Instance | BindingFlags.Public| BindingFlags.NonPublic;
+       System.Type[] _params = {};
+        foreach (Component comp in _components)
+        { 
+            var boxedComponent = comp as System.Object;
+            var method = boxedComponent.GetType()
+                          .GetMethod(MethodName, _flags,null, _params,null);
+            if (method == null)
+                continue;
+            var invokedTheMethod = method.Invoke(comp, null);
+            var converTedMethod = invokedTheMethod as TriggerHandle;
+            if (converTedMethod == null)
+                continue;
+            EventHook(converTedMethod);
+        }
+
     }
 
 

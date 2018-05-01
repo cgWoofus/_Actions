@@ -1,0 +1,6 @@
+﻿using TriggerNamespace;
+interface ICustomComponents
+{
+
+}
+

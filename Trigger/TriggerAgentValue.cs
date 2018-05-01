@@ -3,7 +3,7 @@ using System.Collections;
 using CustomActions;
 
 /// <summary>
-/// added to object to include trigger function on the selected object
+/// added to object to include trigger function on the selected object, adds timer
 /// </summary>
 public class TriggerAgentValue : MonoBehaviour
 {
@@ -13,9 +13,9 @@ public class TriggerAgentValue : MonoBehaviour
     public string Name{ set {_name = value; } get { return _name; } }
     TriggerObjectSend Sender;
     [SerializeField]
-    TriggerObjects _tO =new TriggerObjects();
+    TriggerObject _tO =new TriggerObject();
     
-    public void SetObject(TriggerObjects ob)
+    public void SetObject(TriggerObject ob)
     {
         _tO = ob;
     }

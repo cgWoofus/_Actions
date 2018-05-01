@@ -30,35 +30,33 @@ public class UpdateTriggerAgentValue : ScriptableObject
                 continue;
 
             var val = obj.transform.GetOrAddComponent<TriggerAgent>()as TriggerAgent ;
-
-            copyAtt<TriggerAgent>(val, _objectList[x]);
-               
+            CopyAtt<TriggerAgent>(val, _objectList[x]);               
         }
     }
 
 
-   static void copyAtt<T>(T b,TriggerObjects ob)
+   public static void CopyAtt<T>(T destinationObject,TriggerObject sourceObject)
     {
-        var chuu = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
-        var properties = b.GetType().GetProperties(chuu);
+        var flags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
+        var properties = destinationObject.GetType().GetProperties(flags);
 
         foreach (PropertyInfo source in properties)
         {
-            PropertyInfo des = b.GetType().GetProperty(source.Name);
+            PropertyInfo propertyDestination = destinationObject.GetType().GetProperty(source.Name);
             // var val = source.GetValue(ob, null);
 
 
-            var prop = ob.GetType().GetProperty(source.Name);
+            var prop = sourceObject.GetType().GetProperty(source.Name);
             if (prop == null)
                 continue;
-            var val = prop.GetValue(ob, null);
+            var val = prop.GetValue(sourceObject, null);
 
             if(val==null)
                 {
                     Debug.Log("value is null/property does not exist");
                     continue;
                 }
-            des.SetValue(b,
+            propertyDestination.SetValue(destinationObject,
                 val,
                 null);
         }

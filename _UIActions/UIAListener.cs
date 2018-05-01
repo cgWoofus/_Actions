@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System;
+
 public class UIAListener : MonoBehaviour
 {
     EventTrigger.Entry entree;
@@ -11,7 +13,6 @@ public class UIAListener : MonoBehaviour
         entree = new EventTrigger.Entry();
         var exit = new EventTrigger.Entry();
         entree.eventID = EventTriggerType.PointerClick;
-        // exit.eventID = EventTriggerType.PointerExit;
         entree.callback.AddListener((data) => { Activate((PointerEventData)data); });
         eve.triggers.Add(entree);
 
@@ -23,8 +24,7 @@ public class UIAListener : MonoBehaviour
     {
 
         this.gameObject.transform.GetOrAddComponent<BCAgent>();
-        entree.callback.RemoveListener((chu) => { Activate(data); });
-        
+        entree.callback.RemoveListener((chu) => { Activate(data); });        
         
     }
 }

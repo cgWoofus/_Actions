@@ -1,5 +1,6 @@
 ﻿
 namespace UIANamespace
 {
-    public delegate void WindowCloseCallBack();
+    public delegate void ArgsCallBack(params System.Object[] args);
+
 }

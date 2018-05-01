@@ -12,6 +12,7 @@ public class UIADragTrigger : MonoBehaviour, IPointerEnterHandler,IPointerExitHa
     [SerializeField]
     Rect _rect;
     bool _windowTrigger,_windowWait;
+
     IUIAFeedBackInterface fb;
     Rect _cameraRect;
 
@@ -19,6 +20,7 @@ public class UIADragTrigger : MonoBehaviour, IPointerEnterHandler,IPointerExitHa
     float _xOff,_yOff;
 
     Renderer _foo;
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         _windowWait = true;
@@ -73,11 +75,6 @@ public class UIADragTrigger : MonoBehaviour, IPointerEnterHandler,IPointerExitHa
 
     public void SendObject(GameObject _obj)
     {
-        if(fb == null)
-        { 
-            fb = new TriggerAgentTool(_obj);
-            fb.WindowCloseCB(CloseWindow);
-        }
     }
 }
 
