@@ -30,7 +30,9 @@ public class TriggerAgentValue : MonoBehaviour
     private void OnEnable()
     {
         //subscribe to global actions listener
-        var foo =  GlobalToolBox.Instance.GetOrAddComponent<ActionsListener>();
+        var foo = GameObject.FindObjectOfType<ActionsListener>();
+        if (foo == null)
+            throw new System.NullReferenceException();
         foo.Hook(ref Sender);
         foo.OnBeforeSaveCallBackHook(Submit);
     }
@@ -38,12 +40,11 @@ public class TriggerAgentValue : MonoBehaviour
     private void OnDisable()
     {
         //unsub to global actions listener
-        if (GlobalToolBox.Instance == null)
-            return;
-        var foo = GlobalToolBox.Instance.GetOrAddComponent<ActionsListener>();
+       // if (GlobalToolBox.Instance == null)
+          //  return;
+        var foo = GameObject.FindObjectOfType<ActionsListener>();
         if (foo == null)
             return;
-
         foo.OnBeforeSaveCallBackUnHook(Submit);
 
     }

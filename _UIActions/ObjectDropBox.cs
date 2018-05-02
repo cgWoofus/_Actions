@@ -103,6 +103,7 @@ public class ObjectDropBox : MonoBehaviour, IDropHandler , IPointerEnterHandler,
 
 
 
+
     static ObjectDropEventHandle ExtractMethodToDelegate(System.Object obj,string methodString)
     {
         MethodInfo methodInfo = MethodGet(obj, methodString, new Type[] { typeof(UnityEngine.Object) });
@@ -121,6 +122,8 @@ public class ObjectDropBox : MonoBehaviour, IDropHandler , IPointerEnterHandler,
     public void ReRouteBox(System.Object listener)
     {
         handleInstance = ExtractMethodToDelegate(listener,_dropHandleMethod);
+        CreateBox(listener,GetComponent<RectTransform>());
+
     }
 
     public void OnDrop(PointerEventData eventData)

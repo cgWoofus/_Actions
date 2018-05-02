@@ -4,6 +4,7 @@ using UIANamespace;
 public interface IUIAFeedBackInterface
 {
     bool IsActive();
+    string GetClientName();
     void WindowContent(int id);
     Rect WindowShape();
     string WindowName();

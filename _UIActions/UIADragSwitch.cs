@@ -2,15 +2,12 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using System;
-
- public  class UIADragTrigger : UIADragFeedBackBase, IUIARootPositionInterface
+public class UIADragSwitch : UIADragFeedBackBase, IUIARootPositionInterface
 {
+
     protected override IUIAFeedBackInterface CreateFeedBackInterface()
     {
-        return new TriggerAgentTool(_targetObject);
+        return new SwitchAgentTool(_targetObject);
     }
 }
-
-
-
 

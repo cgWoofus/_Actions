@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using System;
 using UIANamespace;
-using UnityEngine.EventSystems;
 
 using System.Reflection;
 public class TriggerAgentTool : IUIAFeedBackInterface ,IUIADropObjectHandler
@@ -65,7 +62,7 @@ public class TriggerAgentTool : IUIAFeedBackInterface ,IUIADropObjectHandler
     public void CheckIfExisting(GameObject _globalList)
     {
         var chu = _globalList.transform.GetOrAddComponent<ActionsListener>();
-        var foo = chu.CheckAvailability(_target.name);
+        var foo = chu.TriggerObjectCheckAvailability(_target.name);
 
         if (foo != null)
         {
@@ -77,7 +74,7 @@ public class TriggerAgentTool : IUIAFeedBackInterface ,IUIADropObjectHandler
         }
     }
 
-    public void WindowContent(int id)
+    public  virtual void WindowContent(int id)
     {
 
         GUILayout.BeginHorizontal();
@@ -180,6 +177,8 @@ public class TriggerAgentTool : IUIAFeedBackInterface ,IUIADropObjectHandler
     {
         //im using a drop ui
         _dropBox = ObjectDropBox.Construct(this);
+        if (win == null|| win.Length<1)
+            return;
         foreach (ArgsCallBack arg in win)
             arg(this);
     }
@@ -213,4 +212,8 @@ public class TriggerAgentTool : IUIAFeedBackInterface ,IUIADropObjectHandler
         _triggerController = gameObject.name;
     }
 
+    public string GetClientName()
+    {
+        return _name;
+    }
 }

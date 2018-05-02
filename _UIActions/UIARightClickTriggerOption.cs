@@ -32,15 +32,15 @@ public class UIARightClickTriggerOption : MonoBehaviour, IBeginDragHandler ,IEnd
 
     public void Construct()
     {
-        var _globalObj = GlobalObjectGet();
-        fb = new TriggerAgentTool(this.gameObject);
-        fb.CheckIfExisting(_globalObj);
+      ///  var _globalObj = GlobalObjectGet();
+       /// fb = new TriggerAgentTool(this.gameObject);
+       /// fb.CheckIfExisting(_globalObj);
     }
 
     public GameObject GlobalObjectGet()
     {
-        //var foo = GlobalObjectInjection.GetType().GetMethod("GetGlobalObject");
-        //var gO = foo.Invoke(GlobalObjectInjection, null);
+      //  var foo = GlobalObjectInjection.GetType().GetMethod("GetGlobalObject");
+      //  var gO = foo.Invoke(GlobalObjectInjection, null);
         return GlobalToolBox.Instance.gameObject;
     }
 
@@ -101,9 +101,11 @@ public class UIARightClickTriggerOption : MonoBehaviour, IBeginDragHandler ,IEnd
                         }
                         if (foo.IsActive())
                         {
-                           // foo.SendObject(this.gameObject);
-                            if (fb == null)
-                                fb = foo.GetMyWindow();
+                           // if (fb == null)
+                               // {                                    
+                                    fb = foo.GetMyWindow(this.gameObject);
+                                    fb.CheckIfExisting(GlobalObjectGet());
+                              //  }
                             UpdateWindow(fb);
                             break;
                         }
